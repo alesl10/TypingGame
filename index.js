@@ -7,10 +7,13 @@ const $juego = document.querySelector("#juego");
 const $resultados = document.querySelector("#resultados");
 const $ppm = $resultados.querySelector("#resultados-ppm");
 const $exactitud = $resultados.querySelector("#resultados-exactitud");
+const $correctas = $resultados.querySelector("#resultados-PalabrasCorrectas");
+const $letrasCorrIncorr = $resultados.querySelector("#resultados-correct_incorrect");
 const $button = document.querySelector("#recargar-button");
 
-const Tiempo_inicial = 20;
+const Tiempo_inicial = 60;
 let PalabrasCorrectas =0
+let PalabrasIncorrectas =0
 let LetrasCorrectas=0
 let LetrasIncorrectas=0
 
@@ -106,6 +109,7 @@ function onKeyDown(event) {
 
     if ($siguientePalabra == null) {
       PalabrasCorrectas += $parrafo.querySelectorAll("palabra.correct").length;
+      PalabrasIncorrectas += $parrafo.querySelectorAll("palabra.marked").length;
       LetrasCorrectas += $parrafo.querySelectorAll("letra.correct").length;
       LetrasIncorrectas +=
         $parrafo.querySelectorAll("letra.incorrect").length;
@@ -209,8 +213,10 @@ function gameOver() {
   const exactitud = letrasTotales > 0 ? (LetrasCorrectas / letrasTotales) * 100 : 0;
 
   const tiempoTranscurridoEnMinutos = Tiempo_inicial / 60;
-  const ppm = tiempoTranscurridoEnMinutos > 0 ? PalabrasCorrectas / tiempoTranscurridoEnMinutos : 0;
+  const ppm = tiempoTranscurridoEnMinutos > 0 ? (PalabrasCorrectas+PalabrasIncorrectas) / tiempoTranscurridoEnMinutos : 0;
 
   $ppm.textContent = ppm.toFixed(2);
   $exactitud.textContent = `${exactitud.toFixed(2)}%`;
+  $correctas.textContent = PalabrasCorrectas;
+  $letrasCorrIncorr.textContent=`${LetrasCorrectas} / ${LetrasIncorrectas}`
 }
